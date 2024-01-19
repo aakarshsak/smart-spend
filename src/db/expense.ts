@@ -2,6 +2,7 @@ import { Schema, model } from "mongoose";
 
 const ExpenseSchema = new Schema({
   amount: Number,
+  transactionType: String,
   category: String,
   account: String,
   description: String,

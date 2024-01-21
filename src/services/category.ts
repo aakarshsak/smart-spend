@@ -1,22 +1,12 @@
 import { Category } from "../db/category";
 import CustomError from "../errors/CustomError";
 
-export const getAllCategoriesFromDB = async () => {
-  try {
-    const categories = await Category.find();
-    return categories;
-  } catch (e) {
-    console.log(e);
-  }
-};
+export const getAllCategoriesFromDB = async () => await Category.find();
 
 export const addCategoryToDB = async (categoryList: any) => {
   let existingCategories: any;
-  try {
-    existingCategories = await Category.find();
-  } catch (e) {
-    console.log(e);
-  }
+
+  existingCategories = await getAllCategoriesFromDB();
 
   const savedCategories = await Promise.all(
     categoryList.map(async ({ name, transactionType }: any) => {

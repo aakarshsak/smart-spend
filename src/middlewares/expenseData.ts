@@ -4,6 +4,8 @@ import CustomRequest from "../types/CustomRequest";
 import { z } from "zod";
 import { Category } from "../db/category";
 import { TransactionType } from "../constants/constants";
+import CustomError from "../errors/CustomError";
+import ValidationError from "../errors/ValidationError";
 
 const getCategoryList = async () => {
   try {
@@ -12,21 +14,6 @@ const getCategoryList = async () => {
   } catch (e) {
     return [];
   }
-};
-
-export const retrieveAllData = async (
-  req: CustomRequest,
-  res: Response,
-  next: NextFunction
-) => {
-  try {
-    const expenses = await Expense.find();
-    req.middlewareRes = expenses;
-  } catch (e) {
-    console.log(e);
-  }
-
-  next();
 };
 
 export const formatDate = async (
@@ -63,8 +50,9 @@ export const validateExpenseData = async (
   req.body.account = req.body?.account?.toLowerCase();
   const validated = expenseObject.safeParse(req.body);
 
-  if (!validated || !validated.success)
-    return res.status(400).json({ status: 400, msg: validated });
+  if (!validated || !validated.success) {
+    next(new ValidationError(validated.error, 400));
+  }
 
   next();
 };
@@ -92,9 +80,7 @@ export const validateQueryParams = async (
     !validatedAccount.success ||
     !validatedPeriod ||
     !validatedPeriod.success
-  ) {
-    console.log(validatedAccount, validatedPeriod);
-    return res.status(400).json({ status: 400, msg: "Invalid query params" });
-  }
+  )
+    next(new CustomError("invalid query params", 400));
   next();
 };

@@ -1,6 +1,0 @@
-{
-  "watch": ["src"],
-  "ext": "ts",
-  "exec": "cls && npx tsc -b && node",
-  "delay": 500
-}

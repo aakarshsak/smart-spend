@@ -1,12 +1,75 @@
-import { FormEvent, useRef } from "react";
-import axios from "axios";
+import {
+  EffectCallback,
+  FormEvent,
+  SetStateAction,
+  useEffect,
+  useRef,
+  useState,
+} from "react";
+import axios, { AxiosError } from "axios";
+const valuesss: any[] = [
+  {
+    _id: "65aab0689767092c5bed9354",
+    name: "eating out",
+    transactionType: "expense",
+    __v: 0,
+  },
+  {
+    _id: "65aab0689767092c5bed9355",
+    name: "travel",
+    transactionType: "expense",
+    __v: 0,
+  },
+  {
+    _id: "65aab0689767092c5bed9356",
+    name: "entertainment",
+    transactionType: "expense",
+    __v: 0,
+  },
+  {
+    _id: "65aab0689767092c5bed9359",
+    name: "splitwise",
+    transactionType: "income",
+    __v: 0,
+  },
+  {
+    _id: "65aab0689767092c5bed935a",
+    name: "refund",
+    transactionType: "income",
+    __v: 0,
+  },
+  {
+    _id: "65aab0689767092c5bed9357",
+    name: "shopping",
+    transactionType: "expense",
+    __v: 0,
+  },
+  {
+    _id: "65aab0689767092c5bed9358",
+    name: "salary",
+    transactionType: "income",
+    __v: 0,
+  },
+];
 
 const ExpenseForm = () => {
+  const [categories, setCategories] = useState<any[]>([]);
+
   const descriptionInput = useRef<HTMLInputElement>(null);
   const dateInput = useRef<HTMLInputElement>(null);
   const amountInput = useRef<HTMLInputElement>(null);
   const categoryInput = useRef<HTMLSelectElement>(null);
   const accountInput = useRef<HTMLSelectElement>(null);
+
+  useEffect(() => {
+    const getCategoryData = async () => {
+      const { data } = await axios.get("http://localhost:8080/categories");
+      console.log(data);
+      setCategories(data);
+    };
+
+    getCategoryData();
+  }, []);
 
   const submitExpenseForm = async (e: FormEvent) => {
     e.preventDefault();
@@ -21,17 +84,23 @@ const ExpenseForm = () => {
     const req = {
       description: descriptionInput.current?.value,
       date: dateInput.current?.value,
-      amount: amountInput.current?.value,
+      amount: parseInt(amountInput.current?.value ?? ""),
       account: accountInput.current?.value,
       category: categoryInput.current?.value,
+      transactionType: "expense",
     };
-    const res = await axios({
-      method: "post",
-      url: "http://localhost:8080/expenses",
-      data: req,
-    });
 
-    console.log(res, "RESPONSE>......");
+    try {
+      const res = await axios({
+        method: "post",
+        url: "http://localhost:8080/expenses",
+        data: req,
+      });
+
+      console.log(res, "RESPONSE>......");
+    } catch (e: any) {
+      console.log(e.response);
+    }
   };
 
   return (
@@ -60,12 +129,14 @@ const ExpenseForm = () => {
           className="w-5/6 rounded-md border py-3 px-6 font-medium text-date"
           ref={categoryInput}
         >
-          <option value="vategory vaue h ye" selected>
-            Choose a category
+          <option value="" disabled>
+            Select a category
           </option>
-          <option value="value2">value2</option>
-          <option value="value3">value3</option>
-          <option value="value4">value4</option>
+          {categories.map((option) => (
+            <option key={option._id} value={option.name}>
+              {option.name}
+            </option>
+          ))}
         </select>
       </div>
       <div className="mb-5 flex gap-4 items-center">
@@ -96,9 +167,9 @@ const ExpenseForm = () => {
           ref={accountInput}
         >
           <option value="account vaue h ye">Choose an account</option>
-          <option value="value2">value2</option>
-          <option value="value3">value3</option>
-          <option value="value4">value4</option>
+          <option value="HDFC">HDFC</option>
+          <option value="SBI">SBI</option>
+          <option value="ICICI">ICICI</option>
         </select>
       </div>
       <div className="mb-5 flex gap-4 items-center">
@@ -121,6 +192,8 @@ const ExpenseForm = () => {
         className="w-full bg-green-200 text-green-700 py-2 tracking-widest uppercase font-bold text-3xl hover:cursor-pointer"
         value="Submit"
       />
+
+      {/* <h1>{JSON.stringify(categories)}</h1> */}
     </form>
   );
 };

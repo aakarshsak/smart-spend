@@ -23,7 +23,6 @@ export const formatDate = async (
 ) => {
   const date = new Date(req.body.date);
   req.body.date = date;
-  console.log(date, "format");
   next();
 };
 

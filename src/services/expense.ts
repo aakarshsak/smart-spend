@@ -22,7 +22,15 @@ import {
   YEAR,
 } from "../constants/constants";
 
-export const getAllExpensesFromDB = async () => await Expense.find();
+export const getAllExpensesFromDB = async () => {
+  const responses = await Expense.find();
+
+  const sortedResponses = responses.sort((a: any, b: any): any => {
+    return b.date - a.date;
+  });
+
+  return sortedResponses;
+};
 
 export const addExpenseToDB = async (expenseData: any) => {
   const expenseInstance = new Expense(expenseData);
@@ -90,7 +98,6 @@ export const getAllExpenseTotalsFromDB = async ({
     };
   }
 
-  console.log(startDate, endDate);
   const savedExpenses = await Expense.find(searchQuery);
 
   const total = savedExpenses.reduce((acc, { amount, transactionType }) => {
@@ -128,7 +135,6 @@ export const updateExpenseByIdInDB = async (id: string, expense: any) => {
   const updatedExpense = await Expense.findOneAndUpdate({ _id: id }, expense, {
     new: true,
   });
-  console.log(updatedExpense);
   return updatedExpense;
 };
 

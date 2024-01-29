@@ -16,7 +16,7 @@ const customLevels = {
 
 // Adding the custom colors to Winston
 addColors(customColors);
-console.log(process.env);
+
 const logger = createLogger({
   levels: customLevels,
   level: process.env.LOG_LEVEL || "info",

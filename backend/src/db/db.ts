@@ -11,5 +11,5 @@ export const connectDB = () => {
     .then(() => console.log("Connected to db..."))
     .catch((e) => console.log(e));
 
-  mongoose.set("debug", true);
+  // mongoose.set("debug", true);
 };

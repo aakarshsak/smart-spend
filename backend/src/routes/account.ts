@@ -1,24 +1,23 @@
 import { NextFunction, Request, Response, Router } from "express";
-import { addCategoryList, getAllCategories } from "../controllers/category";
+import { addAccounts, getAccounts } from "../controllers/account";
 
 const routes = Router();
 
 routes.get("/", async (req: Request, res: Response, next: NextFunction) => {
   try {
-    res.json(await getAllCategories());
+    res.json(await getAccounts());
   } catch (e) {
     next(e);
   }
 });
 
 routes.post("/", async (req: Request, res: Response, next: NextFunction) => {
-  const categoryList = req.body;
-
   try {
-    const savedCategoryReponse = await addCategoryList(categoryList);
-    res.json({
-      successCount: savedCategoryReponse.length,
-      entries: savedCategoryReponse,
+    const accounts = req.body;
+    const addedAccounts = await addAccounts(accounts);
+    res.send({
+      successCount: addedAccounts.length,
+      entries: addedAccounts,
     });
   } catch (e) {
     next(e);

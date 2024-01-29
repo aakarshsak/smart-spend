@@ -3,7 +3,7 @@ import CustomError from "../errors/CustomError";
 
 export const getAllCategoriesFromDB = async () => await Category.find();
 
-export const addCategoryToDB = async (categoryList: any) => {
+export const addCategoriesToDB = async (categoryList: any) => {
   let existingCategories: any;
 
   existingCategories = await getAllCategoriesFromDB();

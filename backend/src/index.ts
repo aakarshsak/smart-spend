@@ -6,6 +6,7 @@ import { connectDB } from "./db/db";
 import expense from "./routes/expense";
 import category from "./routes/category";
 import timeperiod from "./routes/timeperiod";
+import account from "./routes/account";
 import globalCatcher from "./middlewares/globalCatcher";
 
 const app = express();
@@ -23,6 +24,7 @@ app.use(bodyParser.json());
 app.use("/expenses", expense);
 app.use("/categories", category);
 app.use("/timeperiod", timeperiod);
+app.use("/accounts", account);
 
 app.use(globalCatcher);
 

@@ -2,16 +2,18 @@ import { createLogger, format, transports, addColors } from "winston";
 import "dotenv/config";
 
 const customColors = {
-  info: "blue",
+  info: "cyan",
   error: "red",
   http: "green",
+  verbose: "bold white",
   debug: "yellow",
 };
 
 const customLevels = {
-  error: 0,
-  info: 1,
-  debug: 2,
+  verbose: 0,
+  error: 1,
+  info: 2,
+  debug: 3,
 };
 
 // Adding the custom colors to Winston
@@ -27,7 +29,7 @@ const logger = createLogger({
     // format.errors({ stack: true }),
     format.printf((info) => {
       let colorizer = format.colorize();
-      info.timestamp = colorizer.colorize("debug", info.timestamp);
+      info.timestamp = colorizer.colorize("verbose", info.timestamp);
       if (
         info.httpStatusCode &&
         info.httpStatusCode >= 200 &&

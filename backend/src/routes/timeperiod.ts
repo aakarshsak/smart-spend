@@ -1,18 +1,18 @@
 import { Request, Response, Router } from "express";
 import { TimePeriod } from "../db/timeperiod";
+import logger from "../utility/logger";
 
 const routes = Router();
 
 routes.post("/", async (req: Request, res: Response) => {
   const savedTimePeriods = await Promise.all(
     req.body.map(async (t: any) => {
-      console.log(t);
       const period = new TimePeriod(t);
       return period.save();
     })
   );
 
-  console.log(savedTimePeriods);
+  logger.debug(savedTimePeriods);
 
   res.send("Success");
 });
@@ -22,7 +22,7 @@ routes.get("/", async (req: Request, res: Response) => {
     const timeperiods = await TimePeriod.find();
     res.json(timeperiods);
   } catch (e) {
-    console.log(e);
+    logger.error(e);
   }
 });
 

@@ -1,4 +1,5 @@
 import { createLogger, format, transports, addColors } from "winston";
+import "dotenv/config";
 
 const customColors = {
   info: "blue",
@@ -7,11 +8,18 @@ const customColors = {
   debug: "yellow",
 };
 
+const customLevels = {
+  error: 0,
+  info: 1,
+  debug: 2,
+};
+
 // Adding the custom colors to Winston
 addColors(customColors);
-
+console.log(process.env);
 const logger = createLogger({
-  level: "http",
+  levels: customLevels,
+  level: process.env.LOG_LEVEL || "info",
   format: format.combine(
     format.timestamp({
       format: "YYYY-MM-DD HH:mm:ss",
@@ -19,6 +27,7 @@ const logger = createLogger({
     // format.errors({ stack: true }),
     format.printf((info) => {
       let colorizer = format.colorize();
+      info.timestamp = colorizer.colorize("debug", info.timestamp);
       if (
         info.httpStatusCode &&
         info.httpStatusCode >= 200 &&
@@ -36,7 +45,7 @@ const logger = createLogger({
         info.level = colorizer.colorize("debug", "DEBUG");
         info.message = colorizer.colorize("debug", info.message);
       } else if (info.level === "info") {
-        info.level = colorizer.colorize("info", "info");
+        info.level = colorizer.colorize("info", "INFO");
         info.message = colorizer.colorize("info", info.message);
       }
 

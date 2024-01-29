@@ -1,9 +1,10 @@
 import { Account } from "../db/account";
+import logger from "../utility/logger";
 
 export const getAllAccountsFromDB = async () => await Account.find();
 
 export const addAccountsToDB = async (accountList: string[]) => {
-  console.log(accountList);
+  logger.debug(accountList);
   const savedAccounts = await Promise.all(
     accountList.map(async (a: string) => {
       const acc = new Account({ name: a.toLowerCase() });

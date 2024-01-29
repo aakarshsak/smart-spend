@@ -11,11 +11,13 @@ import {
   getAllExpensesTotals,
   updateExpenseById,
 } from "../controllers/expense";
+import logger from "../utility/logger";
 
 const routes = Router();
 
 routes.get("/", async (req: Request, res: Response, next: NextFunction) => {
   try {
+    logger.debug("Hello");
     res.json(await getAllExpenses());
   } catch (e) {
     next(e);

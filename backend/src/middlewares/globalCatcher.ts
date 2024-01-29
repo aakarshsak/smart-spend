@@ -9,7 +9,7 @@ export default (
   res: Response,
   next: NextFunction
 ) => {
-  logger.log({ level: "error", message: err.message });
+  logger.error(err.message);
   const statusCode = "statusCode" in err ? err.statusCode : 500;
 
   res.status(statusCode).json({

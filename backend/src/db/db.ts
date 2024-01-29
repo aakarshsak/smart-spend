@@ -1,4 +1,5 @@
 import mongoose, { ConnectOptions } from "mongoose";
+import logger from "../utility/logger";
 
 export const connectDB = () => {
   const MONGO_URI = "mongodb://127.0.0.1:27017/track-expense";
@@ -8,8 +9,8 @@ export const connectDB = () => {
 
   mongoose
     .connect(MONGO_URI) //, options)
-    .then(() => console.log("Connected to db..."))
-    .catch((e) => console.log(e));
+    .then(() => logger.info("Connected to db..."))
+    .catch((e) => logger.error(e));
 
   // mongoose.set("debug", true);
 };

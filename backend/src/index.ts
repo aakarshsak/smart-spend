@@ -9,6 +9,7 @@ import timeperiod from "./routes/timeperiod";
 import account from "./routes/account";
 import globalCatcher from "./middlewares/globalCatcher";
 import { httpLogging } from "./middlewares/logging";
+import logger from "./utility/logger";
 
 const app = express();
 
@@ -30,4 +31,4 @@ app.use("/accounts", account);
 
 app.use(globalCatcher);
 
-app.listen(PORT, () => console.log(`Listening on port ${PORT}`));
+app.listen(PORT, () => logger.info(`Listening on port ${PORT}`));

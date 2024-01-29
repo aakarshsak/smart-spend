@@ -1,19 +1,20 @@
 import { Category } from "../db/category";
 import CustomError from "../errors/CustomError";
+import ICategory from "../models/ICategory";
 
 export const getAllCategoriesFromDB = async () => await Category.find();
 
-export const addCategoriesToDB = async (categoryList: any) => {
+export const addCategoriesToDB = async (categoryList: ICategory[]) => {
   let existingCategories: any;
 
   existingCategories = await getAllCategoriesFromDB();
 
   const savedCategories = await Promise.all(
-    categoryList.map(async ({ name, transactionType }: any) => {
+    categoryList.map(async ({ name, transactionType }: ICategory) => {
       if (
         existingCategories &&
         existingCategories.length > 0 &&
-        existingCategories.filter((c: any) => {
+        existingCategories.filter((c: ICategory) => {
           return (
             c.name.toLowerCase().trim() === name.toLowerCase().trim() &&
             c.transactionType.toLowerCase().trim() ===

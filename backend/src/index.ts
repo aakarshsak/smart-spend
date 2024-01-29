@@ -8,6 +8,7 @@ import category from "./routes/category";
 import timeperiod from "./routes/timeperiod";
 import account from "./routes/account";
 import globalCatcher from "./middlewares/globalCatcher";
+import { httpLogging } from "./middlewares/logging";
 
 const app = express();
 
@@ -18,6 +19,7 @@ connectDB();
 const allowedOrigins = ["http://localhost:3000"];
 const corsOptions = { origin: allowedOrigins };
 
+app.use(httpLogging);
 app.use(cors(corsOptions));
 app.use(bodyParser.json());
 

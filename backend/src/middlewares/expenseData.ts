@@ -1,20 +1,14 @@
 import { Response, NextFunction, Request } from "express";
 import { Expense } from "../db/expense";
-import CustomRequest from "../types/CustomRequest";
+import CustomRequest from "../@types/CustomRequest";
 import { z } from "zod";
 import { Category } from "../db/category";
 import { TransactionType } from "../constants/constants";
 import CustomError from "../errors/CustomError";
 import ValidationError from "../errors/ValidationError";
-
-const getCategoryList = async () => {
-  try {
-    const categories = await Category.find();
-    return categories.map((item) => item.name);
-  } catch (e) {
-    return [];
-  }
-};
+import { getAllCategoriesFromDB } from "../services/category";
+import { getAllAccountsFromDB } from "../services/account";
+import logger from "../utility/logger";
 
 export const formatDate = async (
   req: CustomRequest,
@@ -31,16 +25,23 @@ export const validateExpenseData = async (
   res: Response,
   next: NextFunction
 ) => {
-  const values = (await getCategoryList()) as [string, ...string[]];
+  const categories = (await getAllCategoriesFromDB()).map((v) => v.name) as [
+    string,
+    ...string[]
+  ];
+  const accounts = (await getAllAccountsFromDB()).map((v) => v.name) as [
+    string,
+    ...string[]
+  ];
 
-  if (!values || values.length < 1)
+  if (!categories || categories.length < 1)
     return res.status(500).json({ status: 400, msg: "Internal server error" });
 
   const expenseObject = z.object({
     amount: z.number().positive(),
-    category: z.enum(values),
+    category: z.enum(categories),
     transactionType: z.nativeEnum(TransactionType),
-    account: z.string().min(1),
+    account: z.enum(accounts),
     description: z.string().min(5),
     date: z.coerce.date(),
   });

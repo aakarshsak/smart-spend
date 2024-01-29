@@ -21,6 +21,7 @@ import {
   WEEK,
   YEAR,
 } from "../constants/constants";
+import IExpense from "../models/IExpense";
 
 export const getAllExpensesFromDB = async () => {
   const responses = await Expense.find();
@@ -109,7 +110,7 @@ export const getAllExpenseTotalsFromDB = async ({
   const categorySum: any = [];
   savedExpenses.forEach((e) => {
     const alreadyAdded = categorySum?.find(
-      (c: any) =>
+      (c: IExpense) =>
         c.category === e.category && c.transactionType === e.transactionType
     );
     const intialAmount =
@@ -130,7 +131,7 @@ export const getAllExpenseTotalsFromDB = async ({
   return { total, categories: categorySum };
 };
 
-export const updateExpenseByIdInDB = async (id: string, expense: any) => {
+export const updateExpenseByIdInDB = async (id: string, expense: IExpense) => {
   expense.updatedDate = new Date();
   const updatedExpense = await Expense.findOneAndUpdate({ _id: id }, expense, {
     new: true,

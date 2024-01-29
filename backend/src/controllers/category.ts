@@ -1,3 +1,4 @@
+import ICategory from "../models/ICategory";
 import {
   addCategoriesToDB,
   getAllCategoriesFromDB,
@@ -5,5 +6,5 @@ import {
 
 export const getAllCategories = async () => await getAllCategoriesFromDB();
 
-export const addCategoryList = async (categoryList: any) =>
+export const addCategoryList = async (categoryList: ICategory[]) =>
   await addCategoriesToDB(categoryList);

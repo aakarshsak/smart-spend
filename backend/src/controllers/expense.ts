@@ -1,3 +1,4 @@
+import IExpense from "../models/IExpense";
 import {
   addExpenseToDB,
   deleteExpenseByIdFromDB,
@@ -8,12 +9,13 @@ import {
 
 export const getAllExpenses = async () => await getAllExpensesFromDB();
 
-export const addExpense = async (expense: any) => await addExpenseToDB(expense);
+export const addExpense = async (expense: IExpense) =>
+  await addExpenseToDB(expense);
 
 export const getAllExpensesTotals = async (query: any) =>
   await getAllExpenseTotalsFromDB(query);
 
-export const updateExpenseById = async (id: string, expense: any) =>
+export const updateExpenseById = async (id: string, expense: IExpense) =>
   await updateExpenseByIdInDB(id, expense);
 
 export const deleteExpenseById = async (id: string) => {

@@ -4,12 +4,22 @@ module.exports = {
   theme: {
     extend: {
       colors: {
-        date: "#6B7280",
-        focus: "#6A64F1",
+        primary: "rgba(242, 250, 255, 0.2)",
+        secondary: "rgba(242, 250, 255, .45)",
+        tertiary: "#d4deec",
+        accent: "#7486bf",
+        word: "#4f2488",
+        proxy: "#9b9791",
+        disabled: "#cdcdcd",
+        button: "#b091ff",
+        "button-word": "#f8ffac",
+        highlight: "#48cf99",
+        warning: "#fdb87b",
+        error: "#ff4848",
+        dark: "#36215b",
+        "dark-secondary": "",
       },
-      width: {
-        "12/24": "12/24",
-      },
+      width: {},
     },
   },
   plugins: [],

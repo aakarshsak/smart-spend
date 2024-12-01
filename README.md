@@ -50,3 +50,14 @@ SmartSpend is a cloud-based platform designed to help users efficiently manage t
    npm install
    npm start
    ```
+
+## Ports
+
+| Microservices      | Ports |
+|--------------------|-------|
+| Expense Management | 8000  |
+| Authentication     | 8100  |
+| User Profiles      | 8200  |
+| API Gateway        | 8765  |
+| Naming Server      | 8761  |
+| Config Server      | 8888  |

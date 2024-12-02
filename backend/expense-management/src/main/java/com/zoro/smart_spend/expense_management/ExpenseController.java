@@ -11,6 +11,6 @@ public class ExpenseController {
 
     @GetMapping("")
     public String hello() {
-        return "HELLO WORLD";
+        return "HELLO WORLD <333";
     }
 }

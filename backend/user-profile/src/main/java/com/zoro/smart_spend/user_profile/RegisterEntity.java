@@ -1,6 +1,9 @@
 package com.zoro.smart_spend.user_profile;
 
-import jakarta.persistence.*;
+import jakarta.persistence.Column;
+import jakarta.persistence.GeneratedValue;
+import jakarta.persistence.GenerationType;
+import jakarta.persistence.Id;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Data;
@@ -13,24 +16,9 @@ import java.util.Date;
 @Builder
 @NoArgsConstructor
 @AllArgsConstructor
-@Entity
-@Table(name = "users")
-public class User {
-
-    @Id
-    @Column
-    @GeneratedValue(strategy = GenerationType.AUTO)
-    private BigInteger id;
-    @Column
+public class RegisterEntity {
     private String username;
-    @Column
     private String phone;
-    @Column
     private String password;
-    @Column
     private Role role;
-    @Column
-    private Date createAt;
-    @Column
-    private Date updatedAt;
 }

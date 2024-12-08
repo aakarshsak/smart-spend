@@ -1,24 +1,32 @@
 package com.zoro.smart_spend.user_profile;
 
 
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestBody;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
 
 @RestController
-@RequestMapping("/api/users")
+@RequestMapping("/api/auth")
 public class AuthController {
 
+    private AuthService authService;
+
+    @Autowired
+    public AuthController(AuthService authService) {
+        this.authService = authService;
+    }
+
     @PostMapping("/login")
-    public ResponseEntity<String> login(@RequestBody LoginEntity loginEntity) {
-        return ResponseEntity.ok("loggedin");
+    public ResponseEntity<AuthResponse> login(@RequestBody LoginRequest loginRequest) {
+        AuthResponse authResponse = authService.login(loginRequest);
+        return ResponseEntity.ok(authResponse);
     }
 
     @PostMapping("/register")
-    public ResponseEntity<String> register(@RequestBody RegisterEntity registerEntity) {
-        return new ResponseEntity<>("registerd", HttpStatus.ACCEPTED);
+    public ResponseEntity<AuthResponse> register(@RequestBody RegisterRequest registerEntity) {
+
+        AuthResponse authResponse = authService.register(registerEntity);
+        return new ResponseEntity<>(authResponse, HttpStatus.ACCEPTED);
     }
 }

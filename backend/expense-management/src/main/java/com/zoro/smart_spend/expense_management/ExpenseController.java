@@ -9,7 +9,7 @@ import org.springframework.web.bind.annotation.*;
 import java.util.List;
 
 @RestController
-@RequestMapping("/api/expenses")
+@RequestMapping("/api/expense-management/expenses")
 public class ExpenseController {
 
     private ExpenseService expenseService;

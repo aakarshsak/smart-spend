@@ -1,5 +1,6 @@
 package com.zoro.smart_spend.user_profile;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import jakarta.persistence.*;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
@@ -26,10 +27,11 @@ public class User implements UserDetails {
     @Column
     @GeneratedValue(strategy = GenerationType.AUTO)
     private BigInteger id;
-    @Column
+    @Column(unique = true)
     private String username;
-    @Column
+    @Column(unique = true)
     private String phone;
+    @JsonIgnore
     @Column
     private String password;
     @Column

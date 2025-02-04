@@ -21,7 +21,7 @@ public class UserServiceImpl implements UserDetailsService, UserService {
 
     @Override
     public UserDetails loadUserByUsername(String username) throws UsernameNotFoundException {
-        return userRepository.findUserByUsername(username).orElseThrow(() -> new RuntimeException());
+        return userRepository.findUserByUsername(username).orElseThrow(() -> new UsernameNotFoundException("No user name"));
     }
 
     @Override
@@ -31,6 +31,8 @@ public class UserServiceImpl implements UserDetailsService, UserService {
 
     @Override
     public User addNewUser(User user) {
+        User existingUser = userRepository.findUserByUsername(user.getUsername()).orElse(null);
+        if(existingUser!=null) throw new RuntimeException("User already exist....");
         return userRepository.saveAndFlush(user);
     }
 }

@@ -16,12 +16,12 @@ import java.util.List;
 @Service
 public class AuthServiceImpl implements AuthService {
 
-    private PasswordEncoder passwordEncoder;
-    private JwtService jwtService;
-    private UserService userService;
-    private UserDetailsService userDetailsService;
-    private AuthenticationManager authenticationManager;
-    private TokenRepository tokenRepository;
+    private final PasswordEncoder passwordEncoder;
+    private final JwtService jwtService;
+    private final UserService userService;
+    private final UserDetailsService userDetailsService;
+    private final AuthenticationManager authenticationManager;
+    private final TokenRepository tokenRepository;
 
 
     @Autowired
@@ -47,7 +47,6 @@ public class AuthServiceImpl implements AuthService {
 
         User userSaved = userService.addNewUser(user);
         String token = jwtService.generateToken(user);
-
 
         revokeAllUserTokens(userSaved);
         saveUserToken(userSaved, token);

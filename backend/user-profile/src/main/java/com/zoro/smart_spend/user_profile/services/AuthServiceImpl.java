@@ -1,9 +1,9 @@
-package com.zoro.smart_spend.user_profile;
+package com.zoro.smart_spend.user_profile.services;
 
-import jakarta.transaction.Transactional;
+import com.zoro.smart_spend.user_profile.repositories.TokenRepository;
+import com.zoro.smart_spend.user_profile.models.*;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.authentication.AuthenticationManager;
-import org.springframework.security.authentication.AuthenticationProvider;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
 import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.security.core.userdetails.UserDetailsService;
@@ -71,6 +71,17 @@ public class AuthServiceImpl implements AuthService {
         authenticationManager.authenticate(new UsernamePasswordAuthenticationToken(payload.getUsername(), payload.getPassword()));
 
         UserDetails userDetails = userDetailsService.loadUserByUsername(payload.getUsername());
+
+        Token existingToken = tokenRepository.findByUserAndRevokedFalseAndExpiredFalse((User) userDetails).orElse(null);
+        //Token existingToken = listOfExistingTokens.stream().filter(t -> !t.isExpired() && !t.isRevoked()).findFirst().orElse(null);
+        if(existingToken!=null) {
+            try {
+                boolean validToken = jwtService.isTokenValid(existingToken.getToken(), userDetails);
+                return AuthResponse.builder().token(existingToken.getToken()).build();
+            } catch(Exception e) {
+                System.out.println(e);
+            }
+        }
 
         String token = jwtService.generateToken((User) userDetails);
 

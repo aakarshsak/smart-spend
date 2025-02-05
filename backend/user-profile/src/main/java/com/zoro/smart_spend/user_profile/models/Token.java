@@ -1,4 +1,4 @@
-package com.zoro.smart_spend.user_profile;
+package com.zoro.smart_spend.user_profile.models;
 
 import jakarta.persistence.*;
 import lombok.AllArgsConstructor;

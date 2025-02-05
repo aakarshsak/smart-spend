@@ -111,3 +111,5 @@ testem.log
 Thumbs.db
 
 *.env
+
+/documentation

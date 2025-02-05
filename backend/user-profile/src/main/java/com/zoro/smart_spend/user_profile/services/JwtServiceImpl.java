@@ -1,6 +1,8 @@
-package com.zoro.smart_spend.user_profile;
+package com.zoro.smart_spend.user_profile.services;
 
 
+import com.zoro.smart_spend.user_profile.custome_exceptions.InvalidTokenException;
+import com.zoro.smart_spend.user_profile.models.User;
 import io.jsonwebtoken.Claims;
 import io.jsonwebtoken.Jwts;
 import io.jsonwebtoken.SignatureAlgorithm;
@@ -16,7 +18,7 @@ import java.util.HashMap;
 import java.util.function.Function;
 
 @Service
-public class JwtServiceImpl implements JwtService{
+public class JwtServiceImpl implements JwtService {
 
     @Value("${jwt.signin.key}")
     private String jwtSignInKey;
@@ -35,7 +37,7 @@ public class JwtServiceImpl implements JwtService{
         try {
             claims = Jwts.parser().verifyWith(getSignInKey()).build().parseSignedClaims(token).getPayload();
         } catch(Exception e) {
-            System.out.println(e);
+            throw new InvalidTokenException();
         }
         return claims;
     }
@@ -67,7 +69,7 @@ public class JwtServiceImpl implements JwtService{
                 .claims(extraClaims)
                 .subject(user.getUsername())
                 .issuedAt(new Date(System.currentTimeMillis()))
-                .expiration(new Date(System.currentTimeMillis() + 1000*60*30))
+                .expiration(new Date(System.currentTimeMillis() + 1000*60))
                 .signWith(getSignInKey(), SignatureAlgorithm.HS256)
                 .compact();
     }

@@ -1,4 +1,4 @@
-package com.zoro.smart_spend.user_profile;
+package com.zoro.smart_spend.user_profile.models;
 
 import com.fasterxml.jackson.annotation.JsonIgnore;
 import jakarta.persistence.*;

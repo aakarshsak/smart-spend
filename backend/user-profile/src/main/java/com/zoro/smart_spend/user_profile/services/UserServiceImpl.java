@@ -1,5 +1,7 @@
-package com.zoro.smart_spend.user_profile;
+package com.zoro.smart_spend.user_profile.services;
 
+import com.zoro.smart_spend.user_profile.repositories.UserRepository;
+import com.zoro.smart_spend.user_profile.models.User;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.security.core.userdetails.UserDetailsService;

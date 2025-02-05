@@ -1,4 +1,4 @@
-package com.zoro.smart_spend.user_profile;
+package com.zoro.smart_spend.user_profile.configs;
 
 
 import lombok.RequiredArgsConstructor;

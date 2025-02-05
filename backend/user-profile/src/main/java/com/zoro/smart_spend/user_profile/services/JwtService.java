@@ -1,8 +1,8 @@
-package com.zoro.smart_spend.user_profile;
+package com.zoro.smart_spend.user_profile.services;
 
 
+import com.zoro.smart_spend.user_profile.models.User;
 import org.springframework.security.core.userdetails.UserDetails;
-import org.springframework.stereotype.Service;
 
 public interface JwtService {
     String fetchUsername(String token);

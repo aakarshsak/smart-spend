@@ -1,4 +1,5 @@
-package com.zoro.smart_spend.user_profile;
+package com.zoro.smart_spend.user_profile.models;
+
 
 import lombok.AllArgsConstructor;
 import lombok.Builder;
@@ -9,8 +10,7 @@ import lombok.NoArgsConstructor;
 @Builder
 @NoArgsConstructor
 @AllArgsConstructor
-public class RegisterRequest {
-    private String username;
-    private String phone;
-    private String password;
+public class AuthResponse {
+
+    private String token;
 }

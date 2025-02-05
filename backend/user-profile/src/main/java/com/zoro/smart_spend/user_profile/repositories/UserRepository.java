@@ -1,8 +1,8 @@
-package com.zoro.smart_spend.user_profile;
+package com.zoro.smart_spend.user_profile.repositories;
 
+import com.zoro.smart_spend.user_profile.models.User;
 import org.springframework.data.jpa.repository.JpaRepository;
 
-import javax.swing.text.html.Option;
 import java.math.BigInteger;
 import java.util.Optional;
 

@@ -60,16 +60,16 @@ public class JwtServiceImpl implements JwtService {
         return fetchClaim(token, Claims::getExpiration);
     }
 
-    public String generateToken(User user) {
-        return generateToken(new HashMap<>(), user);
+    public String generateToken(User user, long validity) {
+        return generateToken(new HashMap<>(), user, validity);
     }
 
-    private String generateToken(HashMap<String, Object> extraClaims, User user) {
+    private String generateToken(HashMap<String, Object> extraClaims, User user, long validity) {
         return Jwts.builder()
                 .claims(extraClaims)
                 .subject(user.getUsername())
                 .issuedAt(new Date(System.currentTimeMillis()))
-                .expiration(new Date(System.currentTimeMillis() + 1000*60))
+                .expiration(new Date(System.currentTimeMillis() + validity))
                 .signWith(getSignInKey(), SignatureAlgorithm.HS256)
                 .compact();
     }

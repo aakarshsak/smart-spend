@@ -2,6 +2,7 @@ package com.zoro.smart_spend.user_profile.services;
 
 import com.zoro.smart_spend.user_profile.repositories.TokenRepository;
 import com.zoro.smart_spend.user_profile.models.*;
+import com.zoro.smart_spend.user_profile.utility.Constants;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.authentication.AuthenticationManager;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
@@ -46,12 +47,13 @@ public class AuthServiceImpl implements AuthService {
                 .build();
 
         User userSaved = userService.addNewUser(user);
-        String token = jwtService.generateToken(user);
+        String refreshToken = jwtService.generateToken(user, Constants.REFRESH_TOKEN_VALIDITY);
+        String accessToken = jwtService.generateToken(user, Constants.ACCESS_TOKEN_VALIDITY);
 
         revokeAllUserTokens(userSaved);
-        saveUserToken(userSaved, token);
+        saveUserToken(userSaved, refreshToken);
 
-        return AuthResponse.builder().token(token).build();
+        return AuthResponse.builder().refreshToken(refreshToken).accessToken(accessToken).build();
     }
 
     private void saveUserToken(User user, String jwtToken) {
@@ -77,18 +79,32 @@ public class AuthServiceImpl implements AuthService {
         if(existingToken!=null) {
             try {
                 boolean validToken = jwtService.isTokenValid(existingToken.getToken(), userDetails);
-                return AuthResponse.builder().token(existingToken.getToken()).build();
+                String accessToken = jwtService.generateToken((User) userDetails, Constants.ACCESS_TOKEN_VALIDITY);
+                return AuthResponse.builder().refreshToken(existingToken.getToken()).accessToken(accessToken).build();
             } catch(Exception e) {
                 System.out.println(e);
             }
         }
 
-        String token = jwtService.generateToken((User) userDetails);
+        String refreshToken = jwtService.generateToken((User) userDetails, Constants.REFRESH_TOKEN_VALIDITY);
+        String accessToken = jwtService.generateToken((User) userDetails, Constants.ACCESS_TOKEN_VALIDITY);
 
         revokeAllUserTokens((User) userDetails);
-        saveUserToken((User) userDetails, token);
+        saveUserToken((User) userDetails, refreshToken);
 
-        return AuthResponse.builder().token(token).build();
+        return AuthResponse.builder().refreshToken(refreshToken).accessToken(accessToken).build();
+    }
+
+    public AuthResponse refreshToken(RefreshToken authToken) {
+        String refreshToken = authToken.getRefreshToken();
+        Token token = tokenRepository.findByToken(refreshToken).orElse(null);
+        UserDetails user = userDetailsService.loadUserByUsername(jwtService.fetchUsername(refreshToken));
+        String accessToken="";
+        if(token!=null && jwtService.isTokenValid(refreshToken, (User) user) && !token.isExpired() && !token.isRevoked()) {
+            accessToken+= jwtService.generateToken((User) user, Constants.ACCESS_TOKEN_VALIDITY);
+        }
+
+        return AuthResponse.builder().accessToken(accessToken).refreshToken(refreshToken).build();
     }
 
 
